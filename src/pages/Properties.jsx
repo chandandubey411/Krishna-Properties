@@ -3,13 +3,27 @@ import SectionTitle from "../components/SectionTitle";
 import PropertyCard from "../components/PropertyCard";
 
 // Import new separate images
+import bhkfllat from "../assets/bhkfllat.png";
 import flat3 from "../assets/flat3.jpg";
 import flat4 from "../assets/flat4.jpg";
 import shop2 from "../assets/shop2.jpg";
+import onsite from "../assets/onsite.png";
 import rent2 from "../assets/rent2.jpg";
+import residentialplot from "../assets/residentialplot.png";
+import commercialplot from "../assets/commercialplot.png";
+import BuildingRenovation from "../assets/BuildingRenovation.png";
+import flatrenovation from "../assets/flatrenovation.jpg";
 
 const Properties = () => {
   const properties = [
+    {
+      title: "1 BHK Flat – Ramprastha Colony",
+      location: "Ramprastha Colony, Ghaziabad",
+      price: "₹26,00,000",
+      tag: "For Sale",
+      status: "New Listing",
+      image: bhkfllat,
+    },
     {
       title: "2 BHK Apartment – Ramprastha Colony",
       location: "Ramprastha Colony, Ghaziabad",
@@ -35,12 +49,52 @@ const Properties = () => {
       image: shop2,
     },
     {
+      title: "On Site Shop – Main Market",
+      location: "Ramprastha Main Road",
+      price: "₹95,00,000",
+      tag: "On Site",
+      status: "On Request",
+      image: onsite,
+    },
+    {
       title: "2 BHK for Rent",
       location: "Ramprastha Colony",
       price: "₹18,000 / month",
       tag: "For Rent",
       status: "Semi-Furnished",
       image: rent2,
+    },
+    {
+      title: "Residential plot",
+      location: "Ghaziabad",
+      price: "₹60,00,000",
+      tag: "Residential",
+      status: "Devlopment",
+      image: residentialplot,
+    },
+    {
+      title: "Commercial plot",
+      location: "Janakpuri",
+      price: "₹70,00,000",
+      tag: "Commercial",
+      status: "Vacant",
+      image: commercialplot,
+    },
+    {
+      title: "Building Renovation",
+      location: "Delhi NCR",
+      price: "depends",
+      tag: "Building",
+      status: "Call Now",
+      image: BuildingRenovation,
+    },
+    {
+      title: "Flat Renovation",
+      location: "Delhi NCR",
+      price: "depends",
+      tag: "Building",
+      status: "Call Now",
+      image: flatrenovation,
     },
   ];
 
