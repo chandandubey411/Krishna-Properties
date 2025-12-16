@@ -16,7 +16,7 @@ const App = () => {
       <Navbar />
       <main className="flex-1 pt-20">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<><Home /><About /><Properties /><Services /><Projects /><Contact /></>} />
           <Route path="/about" element={<About />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/services" element={<Services />} />
