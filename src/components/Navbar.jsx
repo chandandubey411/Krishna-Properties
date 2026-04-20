@@ -1,107 +1,153 @@
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { FiMenu, FiX, FiPhone, FiHome } from "react-icons/fi";
-import logo from "../assets/logo.png";
-
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/properties", label: "Properties" },
-  { to: "/services", label: "Services" },
-  { to: "/projects", label: "Projects" },
-  { to: "/contact", label: "Contact" },
-];
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, Phone, MessageSquare } from "lucide-react";
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
-  const linkClasses = ({ isActive }) =>
-    `text-sm md:text-[15px] font-medium tracking-wide px-3 py-2 rounded-full transition ${
-      isActive
-        ? "bg-slate-100 text-slate-900"
-        : "text-slate-100/80 hover:bg-slate-800 hover:text-white"
-    }`;
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Properties", path: "/properties" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "Projects", path: "/projects" },
+    { name: "Contact", path: "/contact" },
+  ];
+
+  const isHome = location.pathname === "/";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-slate-800">
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center gap-2 text-slate-50 font-semibold tracking-tight"
-        >
-          <span className="inline-flex h-16 w-16 rounded-xl bg-transparent items-center justify-center">
-            <img src={logo} alt="logo" className="h-16 w-16 object-contain" />
-          </span>
+    <nav
+      className={`fixed top-0 w-full z-[100] transition-all duration-700 ${
+        scrolled || !isHome 
+        ? "bg-white/80 backdrop-blur-xl border-b border-gray-100 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.03)]" 
+        : "bg-transparent py-8"
+      }`}
+    >
+      <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
+        <div className="flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-5 group">
+            <div className="bg-white p-2.5 rounded-2xl shadow-2xl group-hover:rotate-3 transition-all duration-700 border border-gray-100 flex items-center justify-center scale-110">
+              <img src="/logo.png" alt="Krishna Properties" className="h-10 w-auto" />
+            </div>
+            <div className="flex flex-col">
+              <span className={`font-heading font-black text-2xl lg:text-3xl tracking-tighter leading-none ${scrolled || !isHome ? "text-secondary" : "text-white"}`}>
+                KRISHNA <span className="text-secondary-light">PROPERTIES</span>
+              </span>
+              <span className={`text-[9px] uppercase tracking-[0.5em] font-black mt-1 ${scrolled || !isHome ? "text-accent" : "text-accent"}`}>
+                Elite Registry
+              </span>
+            </div>
+          </Link>
+          
+          {/* Desktop Nav & Actions Grouped on Right */}
+          <div className="hidden xl:flex items-center gap-12">
+            <div className="flex items-center gap-5">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`text-[13px] uppercase tracking-[0.2em] font-black transition-all hover:text-accent relative py-2 ${
+                    location.pathname === link.path 
+                    ? "text-accent" 
+                    : (scrolled || !isHome) ? "text-secondary" : "text-white"
+                  }`}
+                >
+                  {link.name}
+                  {location.pathname === link.path && (
+                    <motion.div 
+                      layoutId="navUnderline"
+                      className="absolute -bottom-1 left-0 right-0 h-[2px] bg-accent"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              ))}
+            </div>
 
-          <div className="leading-tight">
-            <span className="block text-sm">PROPERTY MINES</span>
-            <span className="block text-[11px] text-slate-400">
-              Trusted Property Solutions
-            </span>
-          </div>
-        </Link>
+            <div className="h-8 w-[1px] bg-gray-200/20" />
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-2">
-          {navLinks.map((link) => (
-            <NavLink key={link.to} to={link.to} className={linkClasses}>
-              {link.label}
-            </NavLink>
-          ))}
-        </div>
-
-        {/* Desktop CTA */}
-        <a
-          href="tel:9871214007"
-          className="hidden md:inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full bg-gradient-to-r from-emerald-400 to-sky-500 text-slate-950 shadow-md shadow-emerald-500/30 hover:shadow-lg hover:-translate-y-0.5 transition"
-        >
-          <FiPhone className="text-sm" />
-          <span>Call: 9871214007</span>
-        </a>
-
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          className="md:hidden inline-flex items-center justify-center rounded-full p-2 border border-slate-700 text-slate-100 hover:bg-slate-800 transition"
-        >
-          {open ? <FiX size={20} /> : <FiMenu size={20} />}
-        </button>
-      </nav>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden border-t border-slate-800 bg-slate-950/95 backdrop-blur-xl">
-          <div className="max-w-6xl mx-auto px-4 py-3 space-y-2">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={({ isActive }) =>
-                  `block text-sm font-medium px-3 py-2 rounded-xl ${
-                    isActive
-                      ? "bg-slate-100 text-slate-900"
-                      : "text-slate-100/80 hover:bg-slate-800 hover:text-white"
-                  }`
-                }
-                onClick={() => setOpen(false)}
+            <div className="flex items-center gap-8">
+              <div className="flex flex-col items-end">
+                <span className={`text-[8px] uppercase font-black tracking-widest ${scrolled || !isHome ? "text-gray-400" : "text-gray-400"}`}>Private Line</span>
+                <a href="tel:8586881644" className={`font-black text-lg lg:text-xl tracking-tighter ${scrolled || !isHome ? "text-secondary" : "text-white"} hover:text-accent transition-colors`}>
+                  8586881644
+                </a>
+              </div>
+              <a
+                href="https://wa.me/918368591706"
+                className={`btn-premium flex items-center gap-3 px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl ${
+                  (scrolled || !isHome)
+                  ? "bg-secondary text-white" 
+                  : "bg-white text-secondary"
+                }`}
               >
-                {link.label}
-              </NavLink>
-            ))}
-
-            <a
-              href="tel:9871214007"
-              className="mt-2 inline-flex w-full items-center justify-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-sky-500 text-slate-950 shadow-md shadow-emerald-500/30"
-            >
-              <FiPhone />
-              <span>Call Now</span>
-            </a>
+                Concierge Desk
+              </a>
+            </div>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={`xl:hidden p-3 rounded-2xl transition-all ${
+              (scrolled || !isHome) ? "bg-gray-50 text-secondary" : "bg-white/10 text-white backdrop-blur-md"
+            }`}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      )}
-    </header>
+      </div>
+
+      {/* Mobile Nav */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden"
+          >
+            <div className="px-8 py-12 space-y-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`block text-2xl font-heading font-black tracking-tighter ${
+                    location.pathname === link.path ? "text-accent" : "text-secondary"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="pt-8 grid grid-cols-2 gap-4">
+                 <a href="tel:8586881644" className="bg-gray-50 text-secondary py-5 rounded-2xl font-bold flex flex-col items-center justify-center">
+                    <span className="text-[10px] text-gray-400 uppercase mb-1">Call</span>
+                    <Phone size={18} />
+                 </a>
+                 <a href="https://wa.me/918368591706" className="bg-secondary text-white py-5 rounded-2xl font-bold flex flex-col items-center justify-center">
+                    <span className="text-[10px] text-accent uppercase mb-1">WhatsApp</span>
+                    <MessageSquare size={18} />
+                 </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 };
 

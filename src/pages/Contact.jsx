@@ -1,232 +1,286 @@
-import React, { useState } from "react";
-import SectionTitle from "../components/SectionTitle";
-import PrimaryButton from "../components/PrimaryButton";
-import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
+import React from "react";
+import { motion } from "framer-motion";
+import { Phone, Mail, MapPin, Send, MessageSquare, Clock, ArrowUpRight } from "lucide-react";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    requirement: "Buy Residential Property",
-    message: "",
-  });
+  const [result, setResult] = React.useState("");
+  const [isSending, setIsSending] = React.useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null); // { type: "success" | "error", message: string }
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setIsSending(true);
+    setResult("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setResult(null);
+    const formData = new FormData(event.target);
+    // Access key placeholder - user will add theirs later
+    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY_HERE");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "4c31e106-ed27-43ec-9811-03a496832d22",
-          subject: "New enquiry from PROPERTY MINES website",
-          ...formData,
-        }),
+        body: formData
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setResult({
-          type: "success",
-          message: "Thank you! Your enquiry has been sent successfully.",
-        });
-        // form reset
-        setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          requirement: "Buy Residential Property",
-          message: "",
-        });
+        setResult("SECURE TRANSMISSION SUCCESSFUL. OUR CONSULTANTS WILL REACH OUT SHORTLY.");
+        event.target.reset();
       } else {
-        setResult({
-          type: "error",
-          message: "Something went wrong. Please try again later.",
-        });
+        console.log("Error", data);
+        setResult(data.message || "TRANMISSION FAILED. PLEASE TRY AGAIN OR CALL DIRECTLY.");
       }
     } catch (error) {
-      setResult({
-        type: "error",
-        message: "Network error. Please try again.",
-      });
+      console.log("Error", error);
+      setResult("NETWORK ERROR. PLEASE CHECK YOUR CONNECTION.");
     } finally {
-      setLoading(false);
+      setIsSending(false);
     }
   };
 
+  const contactInfo = [
+    {
+      icon: <Phone size={24} className="text-secondary" />,
+      title: "Call Us",
+      details: "+91 8586881644",
+      link: "tel:8586881644",
+    },
+    {
+      icon: <MessageSquare size={24} className="text-secondary" />,
+      title: "WhatsApp",
+      details: "+91 8368591706",
+      link: "https://wa.me/918368591706",
+    },
+    {
+      icon: <Mail size={24} className="text-secondary" />,
+      title: "Email Us",
+      details: "mohitsinghamarpali@gmail.com",
+      link: "mailto:mohitsinghamarpali@gmail.com",
+    },
+    {
+      icon: <MapPin size={24} className="text-secondary" />,
+      title: "Our Office",
+      details: "M-006, Amrapali Silicon City, Sector 76, Noida - 201301",
+      link: "#",
+    },
+  ];
+
   return (
-    <div className="py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <SectionTitle
-          eyebrow="Contact"
-          title="Get in touch with PROPERTY MINES"
-          subtitle="Call us directly or send a quick message using this simple form."
-        />
-
-        <div className="grid gap-8 md:grid-cols-[1.1fr,0.9fr]">
-          {/* Form (Web3Forms) */}
-          <form
-            className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 text-sm"
-            onSubmit={handleSubmit}
-          >
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="block text-xs text-slate-400 mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-400"
-                  placeholder="Enter your name"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-400 mb-1">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-400"
-                  placeholder="Your mobile number"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Email (optional)
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-400"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Requirement
-              </label>
-              <select
-                name="requirement"
-                value={formData.requirement}
-                onChange={handleChange}
-                className="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-400"
-              >
-                <option>Buy Residential Property</option>
-                <option>Buy Commercial Property</option>
-                <option>Sell Property</option>
-                <option>Rent / Lease</option>
-                <option>Other</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Message
-              </label>
-              <textarea
-                rows="4"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                className="w-full rounded-xl bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-400 resize-none"
-                placeholder="Briefly describe your requirement, budget and preferred location."
-              />
-            </div>
-
-            <PrimaryButton
-              type="submit"
-              className="w-full sm:w-auto"
-              disabled={loading}
+    <div className="pt-48 pb-32 bg-white min-h-screen">
+      <div className="container-wide">
+        {/* Elite Header Area */}
+        <div className="flex flex-col lg:flex-row justify-between items-end mb-32 gap-12">
+          <div className="max-w-4xl">
+            <motion.span 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-accent font-black uppercase text-[10px] tracking-[0.4em] mb-4 block"
             >
-              {loading ? "Sending..." : "Send Enquiry"}
-            </PrimaryButton>
+              Direct Engagement
+            </motion.span>
+            <motion.h1 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-6xl md:text-8xl font-heading font-black text-secondary leading-[0.9] tracking-tighter"
+            >
+              SECURE YOUR <br />
+              <span className="text-accent italic font-light">FUTURE</span> ASSET
+            </motion.h1>
+          </div>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl md:text-2xl text-gray-400 font-light max-w-sm lg:text-right"
+          >
+            Noida's elite real estate desk is ready to facilitate your next acquisition.
+          </motion.p>
+        </div>
 
-            {result && (
-              <p
-                className={`text-[11px] mt-2 ${
-                  result.type === "success"
-                    ? "text-emerald-400"
-                    : "text-red-400"
-                }`}
-              >
-                {result.message}
-              </p>
-            )}
-
-            <p className="text-[11px] text-slate-500">
-              Your message will be delivered securely using Web3Forms.
-            </p>
-          </form>
-
-          {/* Contact details */}
-          <div className="space-y-4 text-sm text-slate-300">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 space-y-2">
-              <h3 className="text-base font-semibold text-slate-50">
-                Direct Contact
-              </h3>
-              <p className="flex items-center gap-2">
-                <FiPhone />
-                <a href="tel:9871214007" className="hover:text-emerald-400">
-                  9871214007
-                </a>
-              </p>
-              <p className="flex items-center gap-2">
-                <FiMail />
-                <a
-                  href="mailto:nirmalsatyaa@gmail.com"
-                  className="hover:text-emerald-400"
-                >
-                  nirmalsatyaa@gmail.com
-                </a>
-              </p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-start">
+          {/* Informational Column */}
+          <div className="lg:col-span-5 space-y-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+               {contactInfo.map((item, index) => (
+                 <motion.a
+                   key={index}
+                   href={item.link}
+                   initial={{ opacity: 0, y: 20 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   viewport={{ once: true }}
+                   transition={{ delay: index * 0.1 }}
+                   className="group relative"
+                 >
+                   <div className="mb-6 w-16 h-16 rounded-[2rem] bg-gray-50 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-secondary transition-all duration-500 shadow-sm">
+                     {item.icon}
+                   </div>
+                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">{item.title}</h4>
+                   <p className="text-xl font-bold text-secondary leading-tight break-words group-hover:text-accent transition-colors duration-500">{item.details}</p>
+                 </motion.a>
+               ))}
             </div>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 space-y-2">
-              <h3 className="text-base font-semibold text-slate-50">Office</h3>
-              <p className="flex items-start gap-2">
-                <FiMapPin className="mt-0.5" />
-                <span>
-                  B-14, SHOP NO.1, RAMPRASTHA COLONY,
-                  <br />
-                  GHAZIABAD, UP - 201011
-                </span>
-              </p>
-              <p className="text-xs text-slate-400 mt-2">
-                Landmark: You can mention nearby landmarks here for easy
-                navigation (e.g., near main gate, near specific school, etc.).
-              </p>
+            {/* Operational Metrics */}
+            <div className="p-12 rounded-[3.5rem] bg-secondary text-white relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[100px] -mr-32 -mt-32"></div>
+               <div className="flex items-start gap-8 relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-accent border border-white/5">
+                     <Clock size={28} />
+                  </div>
+                  <div className="space-y-4">
+                     <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2">Concierge Hours</p>
+                        <h4 className="text-2xl font-black font-heading leading-none">MON — SUN</h4>
+                     </div>
+                     <div className="pt-4 border-t border-white/5">
+                        <p className="text-4xl font-black text-white tracking-widest leading-none">09:00 — 21:00</p>
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2 ml-1">Standard Noida Time (IST)</p>
+                     </div>
+                  </div>
+               </div>
             </div>
           </div>
+
+          {/* Engagement Interface */}
+          <motion.div 
+            initial={{ opacity: 0, x: 100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 bg-white p-12 md:p-20 rounded-[4rem] border border-gray-100 shadow-[0_50px_100px_rgba(0,0,0,0.05)] relative overflow-hidden"
+          >
+            {/* Shimmer Border Decoration */}
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
+            
+            <div className="mb-16">
+               <h3 className="text-4xl font-heading font-black text-secondary leading-none tracking-tight mb-4 uppercase">Direct Request</h3>
+               <p className="text-gray-400 font-light text-lg">Detailed inquiries accelerate our sourcing process.</p>
+            </div>
+
+            <form onSubmit={onSubmit} className="space-y-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] ml-2">Identity</label>
+                  <input 
+                    name="name"
+                    required
+                    type="text" 
+                    placeholder="ENTER YOUR FULL NAME"
+                    className="w-full bg-transparent border-b border-gray-100 pb-5 px-2 text-[11px] font-black uppercase tracking-widest focus:outline-none focus:border-accent transition-all placeholder:text-gray-200"
+                  />
+                </div>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] ml-2">Protocol (Phone)</label>
+                  <input 
+                    name="phone"
+                    required
+                    type="tel" 
+                    placeholder="+91 00000 00000"
+                    className="w-full bg-transparent border-b border-gray-100 pb-5 px-2 text-[11px] font-black uppercase tracking-widest focus:outline-none focus:border-accent transition-all placeholder:text-gray-200"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] ml-2">Digital Signature (Email)</label>
+                <input 
+                  name="email"
+                  required
+                  type="email" 
+                  placeholder="EX: NAME@ELITE.COM"
+                  className="w-full bg-transparent border-b border-gray-100 pb-5 px-2 text-[11px] font-black uppercase tracking-widest focus:outline-none focus:border-accent transition-all placeholder:text-gray-200"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] ml-2">Specific Requirements</label>
+                <textarea 
+                  name="message"
+                  required
+                  rows="4" 
+                  placeholder="LOCATION, BUDGET, ASSET CLASS..."
+                  className="w-full bg-transparent border-b border-gray-100 pb-5 px-2 text-[11px] font-black uppercase tracking-widest focus:outline-none focus:border-accent transition-all placeholder:text-gray-200 resize-none"
+                ></textarea>
+              </div>
+
+              {/* Bot Protection Honeypot */}
+              <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
+              <div className="flex flex-col gap-6">
+                <button 
+                  type="submit"
+                  disabled={isSending}
+                  className={`relative w-full group overflow-hidden bg-secondary text-white py-7 rounded-[2rem] font-black text-[13px] uppercase tracking-[0.4em] transition-all ${isSending ? "opacity-70 cursor-not-allowed" : "hover:pr-12"}`}
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    {isSending ? "TRANSMITTING..." : "Initiate Contact"} <Send size={18} className={isSending ? "animate-pulse" : ""} />
+                  </span>
+                  {!isSending && <div className="absolute top-0 right-0 w-0 h-full bg-accent transition-all duration-500 group-hover:w-16"></div>}
+                </button>
+
+                {result && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-6 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center ${
+                      result.includes("SUCCESSFUL") 
+                      ? "bg-green-50 text-green-600 border border-green-100" 
+                      : "bg-red-50 text-red-600 border border-red-100"
+                    }`}
+                  >
+                    {result}
+                  </motion.div>
+                )}
+              </div>
+            </form>
+          </motion.div>
+        </div>
+
+        {/* Strategic Intelligence Area (MAP) */}
+        <div className="mt-48">
+           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+              <div className="max-w-2xl">
+                <span className="text-accent font-black uppercase text-[10px] tracking-[0.4em] mb-4 block">Headquarters</span>
+                <h2 className="text-5xl md:text-7xl font-heading font-black text-secondary leading-[0.9] tracking-tighter uppercase font-heading">The Strategic <br /> <span className="text-accent">Location</span></h2>
+              </div>
+              <div className="flex items-center gap-4 text-gray-400 group cursor-pointer lg:text-right">
+                 <p className="text-[10px] font-black uppercase tracking-widest group-hover:text-secondary transition-colors">Direct Navigation</p>
+                 <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </div>
+           </div>
+           
+           <motion.div 
+             initial={{ opacity: 0, grayscale: 1 }}
+             whileInView={{ opacity: 1, grayscale: 0 }}
+             viewport={{ once: true }}
+             transition={{ duration: 1.5 }}
+             className="h-[600px] w-full rounded-[4rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] grayscale transition-all duration-1000 hover:grayscale-0 relative"
+           >
+              {/* Overlay Glass */}
+              <div className="absolute top-10 left-10 z-10 hidden xl:block">
+                 <div className="bg-white/80 backdrop-blur-xl p-10 rounded-[3rem] border border-white/20 shadow-2xl space-y-6">
+                    <div className="space-y-1">
+                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Office M-006</p>
+                       <h4 className="text-xl font-black text-secondary uppercase font-heading tracking-tight leading-none">Amrapali Silicon City</h4>
+                    </div>
+                    <div className="h-[1px] w-full bg-gray-100"></div>
+                    <p className="text-xs text-gray-400 font-bold leading-relaxed max-w-[200px]">
+                       Sector 76, Noida, Uttar Pradesh 201301, India
+                    </p>
+                 </div>
+              </div>
+              
+              <iframe 
+                src="https://www.google.com/maps?q=Amrapali%20Silicon%20City%20Noida%20Sector%2076&output=embed"
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+           </motion.div>
         </div>
       </div>
     </div>
