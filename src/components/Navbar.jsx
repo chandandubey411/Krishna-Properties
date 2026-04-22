@@ -58,7 +58,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`text-[13px] uppercase tracking-[0.2em] font-black transition-all hover:text-accent relative py-2 ${
+                  className={`text-[10px] uppercase tracking-[0.2em] font-black transition-all hover:text-accent relative py-2 ${
                     location.pathname === link.path 
                     ? "text-accent" 
                     : (scrolled || !isHome) ? "text-secondary" : "text-white"
@@ -87,7 +87,7 @@ const Navbar = () => {
                 </a>
               </div>
               <a
-                href="https://wa.me/918368591706"
+                href="https://wa.me/918586881644"
                 className={`btn-premium flex items-center gap-3 px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl ${
                   (scrolled || !isHome)
                   ? "bg-secondary text-white" 
