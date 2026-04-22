@@ -48,7 +48,7 @@ const Contact = () => {
     {
       icon: <MessageSquare size={24} className="text-secondary" />,
       title: "WhatsApp",
-      details: "+91 8368591706",
+      details: "918586881644",
       link: "https://wa.me/918368591706",
     },
     {

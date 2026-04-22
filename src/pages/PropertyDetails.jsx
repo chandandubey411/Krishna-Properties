@@ -110,7 +110,7 @@ const PropertyDetails = () => {
                     <Phone size={20} /> Call Now
                   </a>
                   <a 
-                    href="https://wa.me/918368591706" 
+                    href="https://wa.me/918586881644" 
                     className="w-full bg-white text-secondary py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-xl shadow-white/10"
                   >
                     <MessageSquare size={20} /> WhatsApp

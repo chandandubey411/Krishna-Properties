@@ -121,7 +121,7 @@ const Projects = () => {
                    <p className="text-gray-400 text-xl font-light">Exclusive early-access opportunities and private developer inventory available through our specialized desk.</p>
                 </div>
                 <div className="flex flex-wrap gap-8 justify-center">
-                   <a href="https://wa.me/918368591706" className="bg-accent text-secondary px-12 py-7 rounded-[2rem] font-black text-[13px] uppercase tracking-widest hover:bg-white transition-all shadow-2xl shadow-accent/20">
+                   <a href="https://wa.me/918586881644" className="bg-accent text-secondary px-12 py-7 rounded-[2rem] font-black text-[13px] uppercase tracking-widest hover:bg-white transition-all shadow-2xl shadow-accent/20">
                       Explore Pre-Launch
                    </a>
                 </div>

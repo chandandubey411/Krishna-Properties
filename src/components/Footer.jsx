@@ -77,7 +77,7 @@ const Footer = () => {
                <div className="space-y-4">
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Concierge Desk</p>
                   <div className="space-y-2">
-                    <a href="https://wa.me/918368591706" className="block text-lg font-bold hover:text-accent transition-colors">+91 8368591706</a>
+                    <a href="https://wa.me/918586881644" className="block text-lg font-bold hover:text-accent transition-colors">+91 8586881644</a>
                     <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">WhatsApp Operational</p>
                   </div>
                </div>
