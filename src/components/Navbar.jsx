@@ -80,12 +80,6 @@ const Navbar = () => {
             <div className="h-8 w-[1px] bg-gray-200/20" />
 
             <div className="flex items-center gap-8">
-              <div className="flex flex-col items-end">
-                <span className={`text-[8px] uppercase font-black tracking-widest ${scrolled || !isHome ? "text-gray-400" : "text-gray-400"}`}>Private Line</span>
-                <a href="tel:8586881644" className={`font-black text-lg lg:text-xl tracking-tighter ${scrolled || !isHome ? "text-secondary" : "text-white"} hover:text-accent transition-colors`}>
-                  8586881644
-                </a>
-              </div>
               <a
                 href="https://wa.me/918586881644"
                 className={`btn-premium flex items-center gap-3 px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl ${
