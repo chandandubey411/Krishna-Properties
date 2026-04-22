@@ -122,7 +122,7 @@ const Services = () => {
                  <a href="tel:8586881644" className="bg-white text-secondary px-12 py-7 rounded-[2rem] font-black text-[13px] uppercase tracking-widest hover:bg-accent transition-all shadow-2xl">
                     Executive Line
                  </a>
-                 <a href="https://wa.me/918368591706" className="bg-accent text-secondary px-12 py-7 rounded-[2rem] font-black text-[13px] uppercase tracking-widest hover:bg-white transition-all shadow-2xl shadow-accent/20">
+                 <a href="https://wa.me/918586881644" className="bg-accent text-secondary px-12 py-7 rounded-[2rem] font-black text-[13px] uppercase tracking-widest hover:bg-white transition-all shadow-2xl shadow-accent/20">
                     WhatsApp Desk
                  </a>
               </div>

@@ -49,7 +49,7 @@ const Contact = () => {
       icon: <MessageSquare size={24} className="text-secondary" />,
       title: "WhatsApp",
       details: "918586881644",
-      link: "https://wa.me/918368591706",
+      link: "https://wa.me/918586881644",
     },
     {
       icon: <Mail size={24} className="text-secondary" />,
