@@ -102,15 +102,6 @@ const Home = () => {
                   <ArrowRight className="transition-transform group-hover:translate-x-2" size={18} />
                 </Link>
                 
-                <div className="flex items-center gap-6">
-                   <a href="https://wa.me/918368591706" className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-accent hover:text-secondary transition-all duration-500 hover:scale-110 active:scale-95 group">
-                      <MessageSquare size={20} className="transition-transform group-hover:rotate-12" />
-                   </a>
-                   <div className="flex flex-col">
-                      <span className="text-[9px] text-gray-500 uppercase font-black tracking-[0.2em]">Private Desk</span>
-                      <a href="https://wa.me/918368591706" className="text-white font-bold text-lg hover:text-accent transition-colors tracking-tighter">8368591706</a>
-                   </div>
-                </div>
               </motion.div>
             </div>
 
