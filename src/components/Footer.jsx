@@ -15,7 +15,7 @@ const Footer = () => {
           <div className="lg:col-span-5 space-y-12">
             <Link to="/" className="flex items-center gap-4 group">
               <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group-hover:border-accent transition-all duration-500">
-                 <img src="/logo.png" alt="Logo" className="h-10 w-auto brightness-0 invert" />
+                 <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
               </div>
               <div className="flex flex-col">
                 <span className="font-heading font-black text-2xl tracking-tighter leading-none">
